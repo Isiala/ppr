@@ -106,13 +106,12 @@ int main() {
     //OUR lowerBound (maybe >D )
     int k = sumOfOnes / numOfVertexes;
     uint lowerBound = numOfVertexes/(k+1);
-    cout << lowerBound << endl;
 
 //-------------------------------------------WHILE-----------------------------------------------------------------
     while (true) {
 
         //POP LAST STACK ITEM -- there are two of them (solution and colored)
-        //WE wanna keep -1 so if it is a furst run of loop then we do not pop anything
+        //WE wanna keep -1 so if it is a first run of loop then we do not pop anything
         if (!firstRun) {
             colored = myStack.top();
             myStack.pop();
@@ -131,7 +130,7 @@ int main() {
 /*NOT SURE*/    if ((int) solution.size() > numOfVertexes - k) continue;      //Upper bound for solution
 
         //IF we already colored everything then if its First player who drawed, then we check this solution
-        //for improvment of solution that we already have and if its better then we declared this solution as best.
+        //for improvement of solution that we already have and if its better then we declared this solution as best.
         if (isAllColored(numOfVertexes,colored)) {
             if (solution.size() % 2 == 0) {
                 if (firstSolution) {
