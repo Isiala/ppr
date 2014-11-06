@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1415213222 source:c:\users\pitr\onedrive\documents\Škola Èvut\1. semester\mi-ppr.2\aplikácia\hon\main.cpp
+	<iostream>
+	<stack>
+	<fstream>
+	<stdlib.h>
+	<vector>
+
