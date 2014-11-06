@@ -25,13 +25,11 @@ bool isNotColored(int vertex, vector<int> vec) {
 }
 
 void colorVertexes(int vertex, vector<int> *colored, vector< vector<int> > graph) {
-
     size_t vSize = graph[vertex].size();
 
     colored->push_back(vertex);
     for(uint i = 0; i < vSize; i++) {
         if (graph[vertex][i] == 1) {
-            //cout << "IS 1 ... i=" << i << " vertex is " << vertex << endl;
             if (isNotColored(i, *colored)) colored->push_back(i);
         }
     }
@@ -45,6 +43,15 @@ void getRidofMinusOne(vector<int> *vec) {
     if (vec->at(0) == -1) vec->erase(vec->begin());
 }
 
+void printGraph(vector< vector<int> > *graph, int numOfVertexes) {
+    cout << numOfVertexes << endl;
+    for(int i = 0; i < numOfVertexes; i++) {
+        for(int j = 0; j < numOfVertexes; j++) {
+            cout << (graph->at(i)).at(j) << " ";
+        }
+        cout << endl;
+    }
+}
 
 //------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------
@@ -63,6 +70,7 @@ int main() {
     vector<int> bestSolution;
     bool firstSolution = true;
     bool firstRun = true;
+    int sumOfOnes = 0;
 
     //Open .txt file
     matrixFile.open("graf.txt");
@@ -76,23 +84,14 @@ int main() {
         getline(matrixFile,temp);
         for(int j = 0; j < numOfVertexes; j++) {
             graph[i][j] = (int) temp[j] - 48;
+            if (graph[i][j] == 1) sumOfOnes++;
         }
     }
 
 //-------------------------------------------------------------------------------
-    /*
-        //PRINT number of Vertexes
-        cout << numOfVertexes << endl;
 
-        //PRINT WHOLE GRAPH
-        for(int i = 0; i < numOfVertexes; i++) {
-            for(int j = 0; j < numOfVertexes; j++) {
-                cout << graph[i][j] << " ";
-            }
-            cout << endl;
-        }
-        //END OF PRINTING
-    */
+    printGraph(&graph, numOfVertexes);
+
 //-------------------------------------------------------------------------------
 
     //WE push back value -1 for future testing of END OF STATE SPACE
@@ -102,7 +101,16 @@ int main() {
     myStack.push(solution);
     myStack.push(colored);
 
+    int tempN = 0;      //tempN just calculate number of PUSHES -- only for optimalization purposes
+
+    //OUR lowerBound (maybe >D )
+    int k = sumOfOnes / numOfVertexes;
+    uint lowerBound = numOfVertexes/(k+1);
+    cout << lowerBound << endl;
+
+//-------------------------------------------WHILE-----------------------------------------------------------------
     while (true) {
+
         //POP LAST STACK ITEM -- there are two of them (solution and colored)
         //WE wanna keep -1 so if it is a furst run of loop then we do not pop anything
         if (!firstRun) {
@@ -113,21 +121,28 @@ int main() {
             myStack.pop();
         }
 
-        // STOP of WHILE, when we searched whole state space
-        if ((solution.back() == -1) && (!firstRun)) break;
-        if (firstRun) firstRun = false;
 
+                // STOP of WHILE, when we searched whole state space
+                if ((solution.back() == -1) && (!firstRun)) break;
+                if (firstRun) firstRun = false;
+
+                //IF we have better solution already, then we cut that branch
+                if ((solution.size() >= bestSolution.size()) && (!firstSolution)) continue;
+/*NOT SURE*/    if ((int) solution.size() > numOfVertexes - k) continue;      //Upper bound for solution
 
         //IF we already colored everything then if its First player who drawed, then we check this solution
         //for improvment of solution that we already have and if its better then we declared this solution as best.
         if (isAllColored(numOfVertexes,colored)) {
             if (solution.size() % 2 == 0) {
-                //cout << "SOM V DOBREJ CASTI...NASIEL SOM VYHOVUJUCE RIESENIE" << endl;
                 if (firstSolution) {
                     bestSolution = solution;
                     firstSolution = false;
+/*NOT SURE*/        if (bestSolution.size() <= lowerBound) break;        //Lower bound for solution
+
                 } else if (solution.size() < bestSolution.size()) {
                     bestSolution = solution;
+/*NOT SURE*/        if (bestSolution.size() <= lowerBound) break;        //Lower bound for solution
+
                 }
             }
             continue;
@@ -144,15 +159,21 @@ int main() {
 
                 myStack.push(currentSolution);
                 myStack.push(currentColored);
+                tempN++;
 
                 currentColored = colored;
                 currentSolution = solution;
             }
         }
     }
+//----------------------------------------------END OF WHILE--------------------------------------
 
     getRidofMinusOne(&bestSolution);
+
+    cout << "Best solution:";
     printVector(bestSolution);
+    cout << endl;
+    cout << tempN << endl;
 
     return 0;
 }
