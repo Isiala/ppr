@@ -121,13 +121,13 @@ int main() {
         }
 
 
-                // STOP of WHILE, when we searched whole state space
-                if ((solution.back() == -1) && (!firstRun)) break;
-                if (firstRun) firstRun = false;
+        // STOP of WHILE, when we searched whole state space
+        if ((solution.back() == -1) && (!firstRun)) break;
+        if (firstRun) firstRun = false;
 
-                //IF we have better solution already, then we cut that branch
-                if ((solution.size() >= bestSolution.size()) && (!firstSolution)) continue;
-/*NOT SURE*/    if ((int) solution.size() > numOfVertexes - k) continue;      //Upper bound for solution
+        //IF we have better solution already, then we cut that branch
+        if ((solution.size() >= bestSolution.size()) && (!firstSolution)) continue;
+        /*NOT SURE*/    if ((int) solution.size() > numOfVertexes - k) continue;      //Upper bound for solution
 
         //IF we already colored everything then if its First player who drawed, then we check this solution
         //for improvement of solution that we already have and if its better then we declared this solution as best.
@@ -136,11 +136,11 @@ int main() {
                 if (firstSolution) {
                     bestSolution = solution;
                     firstSolution = false;
-/*NOT SURE*/        if (bestSolution.size() <= lowerBound) break;        //Lower bound for solution
+                    /*NOT SURE*/        if (bestSolution.size() <= lowerBound) break;        //Lower bound for solution
 
                 } else if (solution.size() < bestSolution.size()) {
                     bestSolution = solution;
-/*NOT SURE*/        if (bestSolution.size() <= lowerBound) break;        //Lower bound for solution
+                    /*NOT SURE*/        if (bestSolution.size() <= lowerBound) break;        //Lower bound for solution
 
                 }
             }
@@ -167,12 +167,15 @@ int main() {
     }
 //----------------------------------------------END OF WHILE--------------------------------------
 
-    getRidofMinusOne(&bestSolution);
-
-    cout << "Best solution:";
-    printVector(bestSolution);
-    cout << endl;
-    cout << tempN << endl;
+    if (bestSolution.size() > 0) {
+        getRidofMinusOne(&bestSolution);
+        cout << "Best solution:";
+        printVector(bestSolution);
+        cout << endl;
+        cout << tempN << endl;
+    } else {
+        cout << "NO SOLUTUION" << endl;
+    }
 
     return 0;
 }
