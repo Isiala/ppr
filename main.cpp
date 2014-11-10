@@ -9,7 +9,6 @@ typedef unsigned int uint;
 
 
 bool isNotColored(int vertex, vector<int> vec) {
-
     for(uint i = 0; i < vec.size(); i++) {
         if (vec[i] == vertex) {
             return false;
@@ -107,7 +106,7 @@ int main() {
     int sumOfOnes = 0;
 
     //Open .txt file
-    matrixFile.open("graf.txt");
+    matrixFile.open("graf5_12u.txt");
     getline(matrixFile,temp);
     numOfVertexes = strtol(temp.c_str(),NULL,10);
 
@@ -138,7 +137,8 @@ int main() {
     int tempN = 0;      //tempN just calculate number of PUSHES -- only for optimalization purposes
 
     //OUR lowerBound (maybe >D )
-    int k = sumOfOnes / numOfVertexes;
+
+    double k = sumOfOnes / (double)numOfVertexes;
     uint lowerBound = numOfVertexes/(k+1);
 
 //-------------------------------------------WHILE-----------------------------------------------------------------
@@ -170,11 +170,12 @@ int main() {
                 if (firstSolution) {
                     bestSolution = solution;
                     firstSolution = false;
-                    /*NOT SURE*/        if (bestSolution.size() <= lowerBound) break;        //Lower bound for solution
+                    if (bestSolution.size() <= lowerBound) break;
+                            //Lower bound for solution
 
                 } else if (solution.size() < bestSolution.size()) {
                     bestSolution = solution;
-                    /*NOT SURE*/        if (bestSolution.size() <= lowerBound) break;        //Lower bound for solution
+                      if (bestSolution.size() <= lowerBound) break;        //Lower bound for solution
 
                 }
             }
