@@ -7,12 +7,6 @@
 using namespace std;
 typedef unsigned int uint;
 
-void printVector(vector<int> vec) {
-    for(uint i = 0; i < vec.size(); i++) {
-        cout << vec[i] << " ";
-    }
-    cout << endl;
-}
 
 bool isNotColored(int vertex, vector<int> vec) {
 
@@ -24,6 +18,41 @@ bool isNotColored(int vertex, vector<int> vec) {
     return true;
 }
 
+void printColoredVertexes(int vertex, vector<int> *colored, vector< vector<int> > graph) {
+    size_t vSize = graph[vertex].size();
+    int first = 1;
+    colored->push_back(vertex);
+    for(uint i = 0; i < vSize; i++) {
+        if (graph[vertex][i] == 1) {
+
+            if (isNotColored(i, *colored)){
+                //cout << i;
+                colored->push_back(i);
+                if(first == 1){
+                    cout << i;
+                    first = 0;
+                }else{
+                    cout << ", " << i;
+                }
+
+            }
+        }
+    }
+}
+
+
+void printVector(vector<int> vec, vector<int> *colored, vector< vector<int> > graph) {
+    for(uint i = 0; i < vec.size(); i++) {
+        cout << "Krok " << (i+1) << ": " << "Hrac " << ((i%2) ? 2 : 1)  << ": Oznaceny uzel: " << vec[i];
+        cout << " Automaticky obarvene: (";
+        printColoredVertexes(vec[i], colored, graph);
+        cout << ")" << endl;
+        cout << "---------------------" << endl;
+    }
+    cout << endl;
+}
+
+
 void colorVertexes(int vertex, vector<int> *colored, vector< vector<int> > graph) {
     size_t vSize = graph[vertex].size();
 
@@ -34,6 +63,10 @@ void colorVertexes(int vertex, vector<int> *colored, vector< vector<int> > graph
         }
     }
 }
+
+
+
+
 
 bool isAllColored(uint sizeOfGraph, vector<int> colored) {
     return (sizeOfGraph == colored.size() - 1) ? true : false;
@@ -64,6 +97,7 @@ int main() {
     stack< vector<int> > myStack;
 
     vector<int> colored;
+    vector<int> coloredBestSolution;
     vector<int> solution;
     vector<int> currentColored;
     vector<int> currentSolution;
@@ -169,13 +203,16 @@ int main() {
 
     if (bestSolution.size() > 0) {
         getRidofMinusOne(&bestSolution);
-        cout << "Best solution:";
-        printVector(bestSolution);
+        cout << endl;
+        cout << "Best solution:" << endl;
+        cout << "---------------------" << endl;
+        cout << "---------------------" << endl;
+        printVector(bestSolution, &coloredBestSolution, graph);
         cout << endl;
         cout << tempN << endl;
     } else {
         cout << "NO SOLUTUION" << endl;
     }
-
+getchar();
     return 0;
 }
