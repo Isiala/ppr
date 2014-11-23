@@ -1,0 +1,79 @@
+
+
+startprogramu
+
+Základní verze
+
+rank = 0
+ - načtu data ze souboru a uložím je do struktury
+ - pošlu všem procesorům počet uzlů 
+ - pošlu všem procesorům graf
+
+ - začnu generovat jednotlivé kombinace označení uzlů a ukládám je do zásobníku
+ - pokud je v zásobníku stejně prvků, jako je spuštěných procesorů, přeruším cyklus
+ - začnu jednotlivé prvky ze zásobníku vyndávat a posílat je jednotlivým procesorům.
+ - potom pokračuju normálně v práci.
+
+
+ - mezitím občas kontroluji, jestli někdo něco neposílá
+
+
+= dokončím práci - najdu nejlepší řešení na svých datech
+ - pošlu procesoru 1 token s hodnotou 0
+ - čekám na token od procesoru n-1
+
+ - pokud bude mít přijatý token hodnotu 1 nastavím ho na 0 a znova pošlu jedničce
+ - takto to bude pokračovat až než mi přijde token 0 (všichni mají dopočítáno)
+ - potom pošlu všem procesorům zprávu s tagem pro ukončení 
+ - následně čekám na zprávy s řešením od všech procesorů
+  - jednotlivá řešení porovnám a na výstup napíšu to úplně nej
+- zavolám Finalize() a ukončim se
+
+
+
+rank != 0
+ - čekám, až mi přijde info, kolik bude uzlů v grafu
+ - naalokuji data pro graf
+ - čekám na data grafu
+ - čekám na vektor s označenými uzly
+ - čekám na vektor se souvisejícími obarvenými uzly
+
+ - podle těchto vektorů nastavím cyklus a začnu generovat další kombinace
+
+
+ - mezitím občas kontroluji, jestli někdo něco neposílá
+    - pokud přijde token, nastavím mu hodnotu 1 a pošlu ho procesoru s s číslem (my_rank + 1) modulo počet_procesorů
+
+
+= dokončím práci - zapamatuji si svoje nej řešení a čekám na zprávu
+ - pokud přijde token, přepošlu ho dál, jak je
+ - pokud přijde příkaz pro ukončení pošlu nule svoje řešení 
+ - zavolám finalize() a ukončim se
+
+
+
+
+
+// rozšíření
+
+ - počítání času
+
+
+ - pokud procesor najde nové nej řešení, pošle jeho hodnotu (velikost a konkrétní řešení) procesoru 0, který jí následně rozešle všem
+ - pokud procesor 0 zjistí, že hodnota je horší než nejlepší řešení (pokud 2 procesory pošlou svá různá řešení najednou), použije se to lepší a druhé se zahodí
+
+
+ - přerozdělování práce mezi procesorama
+
+
+
+
+
+
+
+
+
+
+
+
+
